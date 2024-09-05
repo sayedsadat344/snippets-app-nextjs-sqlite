@@ -16,7 +16,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <nav className="bg-gray-800 p-4">
+          <div className="container mx-auto">
+            <h1 className="text-white text-xl font-bold">Snippets App</h1>
+          </div>
+        </nav>
+        <main>{children}</main>
+      </body>
     </html>
   );
 }
