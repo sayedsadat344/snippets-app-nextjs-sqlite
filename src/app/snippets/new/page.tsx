@@ -4,6 +4,9 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 import SnippetForm from "@/components/SnippetForm";
 
+
+
+
 export default function NewSnippetPage() {
 
 

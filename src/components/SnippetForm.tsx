@@ -7,6 +7,7 @@ import { EditorView, ViewUpdate } from "@codemirror/view";
 import * as actions from "@/actions";
 import { Snippet } from "@prisma/client";
 
+
 const simpleTheme = EditorView.theme({
   "&": {
     backgroundColor: "#f8f8f8",
@@ -24,13 +25,23 @@ interface SnippetEdit {
   snippet: Snippet | null;
 }
 
+
+
+
 export default function NewSnippetForm({ snippet }: SnippetEdit) {
+
+ 
+
+
   const [title, setTitle] = useState(snippet?.title || "");
   const [code, setCode] = useState(snippet?.code || "");
 
+
+  const formData ={title,code}
+
   const handleFormAction = snippet
-    ? actions.editSnippet.bind(null, snippet.id, title, code)
-    : actions.addSnippet.bind(null, title, code);
+    ? actions.editSnippet.bind(null, snippet.id, formData)
+    : actions.addSnippet.bind(null, formData);
 
   return (
     <form action={handleFormAction} className="space-y-4">

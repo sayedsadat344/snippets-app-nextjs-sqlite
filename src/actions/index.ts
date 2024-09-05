@@ -2,14 +2,11 @@
 
 import {db} from '@/db';
 import { redirect } from "next/navigation";
-export async function addSnippet(title:string,code:string){
-    console.log("adding snippet: ",{title,code});
+export async function addSnippet(formData:any){
+    console.log("adding snippet: ",formData);
 
         const snippet = await db.snippet.create({
-          data: {   
-            title,
-            code,
-          },
+          data: formData
         });
     
         console.log("Snippet", snippet);
@@ -20,15 +17,15 @@ export async function addSnippet(title:string,code:string){
 
 
 
-export async function editSnippet(id:number,title:string,code:string) {
-    console.log("editing snippet: ",{id,title,code});
+export async function editSnippet(id:number,formData:any) {
+    console.log("editing snippet: ",formData);
 
   
 
       if (id) {
         await db.snippet.update({
           where: { id: id },
-          data: { title, code },
+          data: formData,
         });
       }
   
@@ -37,3 +34,5 @@ export async function editSnippet(id:number,title:string,code:string) {
     
   
 }
+
+
