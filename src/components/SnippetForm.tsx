@@ -35,16 +35,32 @@ export default function NewSnippetForm({ snippet }: SnippetEdit) {
 
   const [title, setTitle] = useState(snippet?.title || "");
   const [code, setCode] = useState(snippet?.code || "");
-
+  const [error, setError] = useState<string | null>(null); 
 
   const formData ={title,code}
 
-  const handleFormAction = snippet
-    ? actions.editSnippet.bind(null, snippet.id, formData)
-    : actions.addSnippet.bind(null, formData);
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null); 
+
+    try {
+      if (snippet) {
+        await actions.editSnippet(snippet.id, formData); 
+      } else {
+        await actions.addSnippet(formData); 
+      }
+    } catch (err: any) {
+      setError(err.message); // Set error message if an error occurs
+    }
+  };
 
   return (
-    <form action={handleFormAction} className="space-y-4">
+    <form onSubmit={handleFormSubmit} className="space-y-4">
+      {error && ( // Display error message if exists
+        <div className="text-red-500 mb-2">
+          {error}
+        </div>
+      )}
       <div>
         <label htmlFor="title" className="block mb-2">
           Title
@@ -63,7 +79,6 @@ export default function NewSnippetForm({ snippet }: SnippetEdit) {
         <label htmlFor="code" className="block mb-2">
           Code
         </label>
-
         <CodeMirror
           value={code}
           onChange={(value) => setCode(value)}
@@ -76,12 +91,7 @@ export default function NewSnippetForm({ snippet }: SnippetEdit) {
         type="submit"
         className="bg-blue-500 text-white px-4 py-2 rounded"
       >
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          {snippet ? "Update Snippet" : "Save Snippet"}
-        </button>
+        {snippet ? "Update Snippet" : "Save Snippet"}
       </button>
     </form>
   );
