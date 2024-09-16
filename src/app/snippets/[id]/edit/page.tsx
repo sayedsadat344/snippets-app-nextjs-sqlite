@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeftIcon, PencilIcon } from "@heroicons/react/24/solid";
 import SnippetForm from "@/components/SnippetForm";
+import * as actions from "@/actions";
+import { Snippet } from "@prisma/client";
 
 interface ViewSnippetProps {
   params: {
@@ -11,14 +13,11 @@ interface ViewSnippetProps {
 }
 
 export default async function EditSnippet({ params }: ViewSnippetProps) {
-  const snippet = await db.snippet.findUnique({
-    where: { id: parseInt(params.id) },
-  });
+  const snippet: Snippet | null = await actions.getSnippetById(params.id);
 
   if (!snippet) {
     notFound();
   }
-
 
   return (
     <div className="container mx-auto p-4">
